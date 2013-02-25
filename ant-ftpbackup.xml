@@ -1,0 +1,114 @@
+<project name="ftpbackup" default="runbackup">
+
+	<!-- User defined properties -->
+	<property name="ftp.host" value="localhost" />
+	<property name="ftp.port" value="21" />
+	<property name="ftp.user" value="name" />
+	<property name="ftp.password" value="password" />
+	<property name="fromdirectory" value="/xampp" />
+	<property name="todirectory" value="D:\dev\backups\mysite1" />
+	<property name="keep.last.n.archives" value="4" />
+
+	<!-- Service properties -->
+	<property name="target.dir" value="target" />
+	<property name="checksum.dir" value="md5" />
+	<property name="follow.symlinks" value="false" />
+	<property name="get.only.newer.or.changed" value="true" />
+	<property name="follow.symlinks" value="false" />
+	<property name="create.archive" value="true" />
+	<property name="clean.after.archiving" value="false" />
+	
+	<target name="init">
+		<tstamp>
+			<format property="date.time" pattern="yyyy-MM-dd.HH-mm-ss"/>
+		</tstamp>
+		<mkdir dir="${todirectory}/${target.dir}" />
+		<mkdir dir="${todirectory}/${checksum.dir}" />
+		<echo>Deleting previous log file</echo>
+		<delete verbose="true">
+			<fileset dir="${todirectory}">
+				<include name="*.log"/>
+			</fileset>
+		</delete>	
+		<record name="${todirectory}/${date.time}.log" loglevel="info" />
+	</target>
+
+	<target name="runbackup" depends="init">
+		<antcall target="download" />
+		<antcall target="checksum.and.archive" />
+		<antcall target="clean" />
+		<antcall target="keep.last.archives" />
+	</target>
+
+	<target name="download">
+		<ftp password="${ftp.password}" userid="${ftp.user}" 
+		    		server="${ftp.host}" port="${ftp.port}" 
+		    		preservelastmodified="true" binary="true" 
+		    		action="get" passive="true" remotedir="${fromdirectory}"
+				depends="${get.only.newer.or.changed}" verbose="true"
+				retriesAllowed="3">
+			<fileset dir="${todirectory}/${target.dir}" followsymlinks="${follow.symlinks}">
+				<include name="**/*"/>
+			</fileset>
+		</ftp>
+	</target>
+	
+	<target name="checksum.and.archive">
+		<loadfile property="previous.checksum" srcFile="${todirectory}/checksum.md5" failonerror="false"/>
+		<checksum totalproperty="current.checksum" todir="${todirectory}/${checksum.dir}">
+			<fileset dir="${todirectory}/${target.dir}" followsymlinks="${follow.symlinks}">
+				<include name="**/*"/>
+			</fileset>
+		</checksum>
+		<concat destfile="${todirectory}/checksum.md5">${current.checksum}</concat>
+		
+		<condition property="is.checksums.equals">
+			<equals arg1="${previous.checksum}" arg2="${current.checksum}"/>
+		</condition>
+		<condition property="archiving.log" 
+			value="Backup is not changed from previous time. No sense to create new archive"
+			else="A new archive will be created. Have changes from previous time">
+			<equals arg1="${previous.checksum}" arg2="${current.checksum}"/>
+		</condition>
+		<echo>${archiving.log}</echo>
+		<antcall target="archive"/>
+	</target>
+
+	<target name="archive" if="${create.archive}" unless="${is.checksums.equals}">
+		<zip destfile="${todirectory}/${date.time}.zip" basedir="${todirectory}/${target.dir}" />
+	</target>
+
+	<target name="clean" if="${clean.after.archiving}">
+		<echo>You are requested to clean downloaded files after archiving:</echo>
+		<delete dir="${todirectory}/${target.dir}" verbose="true"/>
+	</target>
+
+	<target name="keep.last.archives">		
+		<echo>keeping maximum ${keep.last.n.archives} newest archives</echo>
+		<sort id="all.last.files">
+			<date/>
+			<fileset dir="${todirectory}" includes="*zip"/>
+		</sort>			
+		
+		<last count="${keep.last.n.archives}" id="survival.last.files">
+			<sort>
+				<date/>
+				<fileset dir="${todirectory}" includes="*zip"/>
+			</sort>
+		</last>
+		
+		<difference id="old.files.to.delete">
+			<resources refid="all.last.files"/>
+			<resources refid="survival.last.files"/>
+		</difference>
+			
+		<delete verbose="true">
+			<difference id="old.files.to.delete">
+				<resources refid="all.last.files"/>
+				<resources refid="survival.last.files"/>
+			</difference>
+		</delete>				
+	</target>
+			
+
+</project>
