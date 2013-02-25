@@ -1,7 +1,7 @@
 ant-ftpbackup
 =============
 
-Ant based routine to backup your site via ftp.
+Ant based routine to backup your site via ftp (meaning from ftp to local hdd).
 It's free as a free beer, but will take you several minutes to install. 
 
 Abilities: 
