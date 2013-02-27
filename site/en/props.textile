@@ -1,0 +1,16 @@
+h1{font-size: 150%}. Ant FTP Backup Properties
+
+h2. Obligatory properties
+
+|_. property name|_. allowed value|_. description|
+{background-color:#F8F8F8}. |@ftp.host@|String| Only domain address of your ftp server without any protocol or path included|
+{background-color:#F0F0F0}. |@ftp.port@|numeric, usually 21| Ftp port on your ftp server|
+{background-color:#F8F8F8}. |@ftp.user@|String|Your login to access ftp|
+||||
+||||
+||||
+||||
+||||
+||||
+||||
+
