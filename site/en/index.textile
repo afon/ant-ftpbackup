@@ -1,0 +1,147 @@
+h1{font-size: 150%}. Ant FTP Backup
+
+p. "Русский":../ru/index.html | "English":./index.html
+
+p. its an "Ant":http://ant.apache.org based routine to backup your site via ftp - meaning from ftp to local hdd (or where you'll run it). 
+*It's free as a free beer, but will take you several minutes to install*. 
+
+h2. Abilities: 
+
+* backup your site via ftp;
+* create archive each time when backup;
+* download only newer or changed files - this will save you some network traffic and time;
+* create new archive only if there were newer or changed files - this will save you several megabytes on your HDD;
+* take care for log file from last backup process.
+
+h2. Installation:
+
+(shortly, but here is good description below)
+ 
+* download and install Java (meaning JRE) and add JAVA_HOME environment variable;
+* download and unzip Ant and add ANT_HOME environment variable; 
+* run 'ant -f fetch.xml' from ANT_HOME directory for fetching several additional ant libraries;
+* download this ftpbackup.xml, change properties like user, password, host etc;
+* run from command line "ant -f ftpbackup.xml" and enjoy your backup process. 
+
+h2. Scheduling: 
+
+Use scheduler embedded in your OS. This will "crontab" on linux and "Task Scheduler" on Windows. 
+
+h2. Resources
+
+* "Download ant-ftpbackup":../ant-ftpbackup.xml
+* "Read full configuration specs":./props.html
+
+h1{font-size: 150%}. A step-by-step description for non geeks
+
+Here I will assume that you are Windows user. If you are linux or mac guy - use your package manager to find and install all the stuff, on linux and macs all following steps will be managed by your package application, you just need to find it and install. So let's start. 
+
+h3. Install Java
+
+The better place where to find latest JRE version is a "java.com/en/download":http://java.com/en/download/index.jsp page. Click on big red button labeled "*Free Java Download*", save and then install as any other usual program. During installation please remember the path where Java wants to be installed, remember or better even copy it, because we will need this path at the next step.
+
+"Here":http://java.com/en/download/help/windows_manual_download.xml is Sun's help page with images, if you still can't understand how to install it. 
+
+h3. Set up JAVA_HOME environment variable
+
+Open *Control Panel*, find and click on *System and Security* section, open *System* section, find and click on *Advanced system settings*  link at the upper left corner of that window and a *System Properties* pop-up will raised, already opened on *Advanced* tab. Huh, you are here. Now locate the *Environment Variable* button, press it and one another *Environment Variables* pop-up will raised. In the upper *User Variables* section press *New* button and there add your new variable. The Variable Name will be "@JAVA_HOME@" and the Variable Value will be that path you have copied at previous step. Usually Java installed in "@C:\Program Files\Java\jrex.x.x-xx@" where the X-s are the numbers of version and build. Click Ok, Ok, Ok to save your added variable and we are done with this.
+
+h3. Donwload and unzip Ant, configure ANT_HOME environment variable
+
+Navigate to "Apache Ant - Binary Distributions":http://ant.apache.org/bindownload.cgi page, scroll little bit down and find row like this: "@.zip archive: apache-ant-x.x.x-bin.zip [PGP] [SHA1] [SHA512] [MD5]@". This is your choice - download zip version of Ant's distribution and unpack it somewhere, but better to use short path, saying "@C:\tools\apache-ant-x.x.x@" directory. For example currently for me this path is looks like @C:\tools\apache-ant-1.8.4@, because version 1.8.4 is latest now. Check that directory now: you have to find there "bin", "etc","lib" and "manual" directories. If its all ok, then add @ANT_HOME@ environment variable pointing to this @C:\tools\apache-ant-x.x.x@ path, just like you did it for @JAVA_HOME@ variable.  
+
+h3. Optionally, you may modify PATH environment variable
+
+Currently you can run Ant only from ANT_HOME/bin directory. Lets check it. 
+
+Open command line window (press Start button, type "cmd" in "search" field and press enter), type
+
+bc..  C:\tools\apache-ant-x.x.x\bin\ant -v
+
+p. surely, type here your real path to Ant. Any way, you should see output something like
+
+bc.. 
+Apache Ant(TM) version 1.8.4 compiled on May 22 2012
+Trying the default build file: build.xml
+Buildfile: build.xml does not exist!
+Build failed
+
+p. But isn't it better to type 'ant' without specifying the full path to it? This is resolved by adding ' ANT_HOME/bin' path to @PATH@ environment variable. 
+
+Open "*Environment Variable*" window again and try to find @PATH@ variable inside "*User Variables*" section. If it present here, then modify it: add to end of its value following part: "@;%ANT_HOME%\bin@" and save (pres Ok, Ok, Ok). If there is no such variable, then add new variable with name @PATH@ and in value put following part: "@%PATH%;%ANT_HOME%\bin@" and save. 
+
+Now open new "@cmd@" window and type just "@ant -v@". You should see exactly the same output like previous time. 
+You are done. 
+
+h3. Download and configure ant-ftpbackup
+ 
+Download "ant-ftpbackup.xml":../ant-ftpbackup.xml directly from this link, save file somewhere, saying in @C:\tools\ant-ftpbackup.xml@. Now let's configure your first backup. 
+
+Open this file for edit and change required options to access your ftp site. 
+At the top of file find section looking like this: 
+
+bc.. 
+<property name="ftp.host" value="localhost" />
+<property name="ftp.port" value="21" />
+<property name="ftp.user" value="name" />
+<property name="ftp.password" value="password" />
+<property name="fromdirectory" value="/xampp" />
+<property name="todirectory" value="D:\dev\backups\xamppexample" />
+<property name="keep.last.n.archives" value="4" />
+	
+p. You will need to change respective values according to your ftp credentials. 
+@ftp.host@ - for example @mysite.com@, there is no need to type full path or specify @ftp://@ protocol name. Just fill your domain address and you are done. 
+@ftp.port@ - usually most of hosts use default ftp port, equals to @21@. And usually you don't need to change this. But if you need to change port number, probably you already know about it. 
+@ftp.user@ - your login to access ftp. 
+@ftp.password@ - your password to access ftp.
+@fromdirectory@ - indicates remote ftp directory, from where you want to grab files to backup. Note that leading slash @/@ is optional, but any way @fromdirectory@ parameter must be specified from root of your ftp resource. For example, when you open your ftp host in file manager (explorer, far, mc or whatever) and need to proceed for example to @www/mysite.com/public_html/data@ directory in order to backup it, then specify  value for @fromdirectory@ just as @/www/mysite.com/public_html/data@
+@todirectory@ - just the full local path where you want your backup to be saved. For example @C:\backups\mysite.com\databak@. All unexisting directories from this path will be created automatically, for example when @backups@ directory is not created yet. 
+
+For the first try you are done, and in order to just check how it works, specify @fromdirectory@ where just several little files lives, so first backup will quick and clean. Another options you will change later, when test backup will be created successfully. Save file and try to run your first backup.
+
+h3. Run first backup
+
+Open new @cmd@ window ant type: @ant -f C:\tools\ant-ftpbackup.xml@. Your should see output like this: 
+
+bc.. 
+Buildfile: C:\tools\ant-ftpbackup.xml
+init:
+    [mkdir] Created dir: C:\backups\mysite.com\databak\target
+    [mkdir] Created dir: C:\backups\mysite.com\databak\md5
+runbackup:
+prepare:
+     [echo] Backup begin at 2013-02-27.15-49-50
+     [echo] Deleting previous log file
+download:
+      [ftp] getting files
+      [ftp] transferring .modell to C:\backups\mysite.com\databak\target\.modell
+      [ftp] transferring .modell-usb to C:\backups\mysite.com\databak\target\.modell-usb
+      [ftp] transferring .version to C:\backups\mysite.com\databak\target\.version
+......
+      [ftp] transferring xampp.css to C:\backups\mysite.com\databak\target\xampp.css
+      [ftp] transferring xampp.js to C:\backups\mysite.com\databak\target\xampp.js
+      [ftp] 125 files retrieved
+checksum.and.archive:
+ [loadfile] C:\backups\mysite.com\databak\checksum.md5 doesn't exist
+     [echo] A new archive will be created. Have changes from previous time
+archive:
+      [zip] Building zip: C:\backups\mysite.com\databak\2013-02-27.15-49-50.zip
+clean:
+keep.last.archives:
+     [echo] keeping maximum 4 newest archives
+BUILD SUCCESSFUL
+Total time: 3 seconds
+
+p. if the @cmd@ window was closed quickly, navigate to @C:\backups\mysite.com\data\@ directory, and find @2013-02-27.15-49-50.log@ file (sure your file will be named according to time when backup was ran by you). Inside that file will be exactly the same output. Each latest backup will create such log file and write all the output information for latest backup process. 
+
+h3. What's next?
+
+Rename ant-ftpbackup.xml according to your backup name and place it near your @todirectory@ folder. Each such xml file will contain separate properties for different sites. For example you can have 2 backups for mysite1.com and mysite2.net in @C:\backups@ folder, so it content would be like this:
+
+bc.. 
+DIR mysite1.com/ 
+FILE mysite1.com.xml
+DIR mysite2.net/
+FILE mysite2.net.xml
+
+p. Also check additional properties, that you may want to change to suit your needs for particular backup at "properties":./props.html page. As an example you may not want to create archives each time when backing up your site, just because already have configured cron task for archiving at your hosting, or you may want to clear downloaded files after archiving etc. 

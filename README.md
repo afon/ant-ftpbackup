@@ -12,10 +12,10 @@ Abilities:
 - take care for log file from last backup process.
 
 Installation (short): 
-- download and install Java (meaning JRE) and add JAVA_HOME environment variable;
-- download and unzip Ant and add ANT_HOME environment variable; 
+- download and install Java (meaning JRE) and configure JAVA_HOME environment variable;
+- download and unzip Ant, configure ANT_HOME and PATH environment variables; 
 - run 'ant -f fetch.xml' from ANT_HOME directory for fetching several additional ant libraries;
-- download this ftpbackup.xml, change properties like user, password, host etc;
+- download this ant-ftpbackup.xml, change properties like user, password, host etc;
 - run from command line "ant -f ftpbackup.xml" and enjoy your backup process. 
 
 Scheduling: 
