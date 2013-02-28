@@ -2,15 +2,21 @@ h1{font-size: 150%}. Ant FTP Backup Properties
 
 h2. Obligatory properties
 
-|_. property name|_. allowed value|_. description|
+|_. Property name|_. Allowed value|_. Description|
 {background-color:#F8F8F8}. |@ftp.host@|String| Only domain address of your ftp server without any protocol or path included|
-{background-color:#F0F0F0}. |@ftp.port@|numeric, usually 21| Ftp port on your ftp server|
-{background-color:#F8F8F8}. |@ftp.user@|String|Your login to access ftp|
-||||
-||||
-||||
-||||
-||||
-||||
-||||
+{background-color:#F0F0F0}. |@ftp.port@|Numeric| Ftp port on your ftp server, usually 21 on most hosts|
+{background-color:#F8F8F8}. |@ftp.user@|String| Your login to access ftp|
+{background-color:#F0F0F0}. |@ftp.password@|String| Your password to access ftp|
+{background-color:#F8F8F8}. |@fromdirectory@|String| Indicates remote ftp directory, from where you want to grab files to backup. Note that leading slash @/@ is optional, but any way @fromdirectory@ parameter must be specified from root of your ftp resource. For example, when you open your ftp host in file manager (explorer, far, mc or whatever) and need to proceed for example to @www/mysite.com/public_html/data@ directory in order to backup it, then specify  value for @fromdirectory@ just as @/www/mysite.com/public_html/data@|
+{background-color:#F0F0F0}. |@todirectory@|String| Just the full local path where you want your backup to be saved. For example @C:\backups\mysite.com\databak@. All unexisting directories from this path will be created automatically, for example when @backups@ directory is not created yet.|
 
+h2. Optional properties. Use for fine tuning
+
+|||| 
+{background-color:#F0F0F0}. |@create.archive@| *true* or *false* | Indicates whether to create archive from downloaded resources (true) or not (false)|
+{background-color:#F8F8F8}. |@keep.last.n.archives@|Numeric| Indicates how many last archives to keep. If the quantity of archives exceeds this number then most oldest archive will be deleted. Useful for keeping 7 latest archives if you make backups daily, or keep 4 archives if you backup once per week, for example |
+{background-color:#F0F0F0}. |@follow.symlinks@| *true* or *false* | When this property is set to *true*, then backuper will walk into symlinks as in usual directories. But I really don't know what would be the side effect if there are cyclic symlinks will appeared. *false* by default |
+{background-color:#F8F8F8}. |@get.only.newer.or.changed@| *true* or *false* | *true* will indicates that only updated or new resources will downloaded during *next* backup of the same resource. This can save you much time, because each file or directory will only be checked against that files that were already been downloaded previous time, but will not transfer them if they are not changed. *false* if you want to retrieve all remote resources each time when backup. Sure, this property will not effect if @clean.after.archiving@ will be set to true, neither @newer@ been *true* or *false*. By default a *true* value is assigned |
+{background-color:#F0F0F0}. |@clean.after.archiving@|*true* or *false*| When *true* then all downloaded resources will be deleted after archiving. Sure, if you will not create archive after downloading and then will want to clean all that transfered stuff, I really don' know why you want to backup something :) |
+
+ 
