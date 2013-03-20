@@ -12,6 +12,7 @@ h2. Obligatory properties
 
 h2. Optional properties. Use for fine tuning
 
+|_. Property name|_. Allowed value|_. Description|
 {background-color:#F0F0F0}. |@create.archive@| *true* or *false* | Indicates whether to create archive from downloaded resources (true) or not (false)|
 {background-color:#F8F8F8}. |@keep.last.n.archives@|Numeric| Indicates how many last archives to keep. If the quantity of archives exceeds this number then most oldest archive will be deleted. Useful for keeping 7 latest archives if you make backups daily, or keep 4 archives if you backup once per week, for example |
 {background-color:#F0F0F0}. |@follow.symlinks@| *true* or *false* | When this property is set to *true*, then backuper will walk into symlinks as in usual directories. But I really don't know what would be the side effect if there are cyclic symlinks will appeared. *false* by default |
