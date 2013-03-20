@@ -1,21 +1,26 @@
 <project name="ant-ftpbackup" default="runbackup">
 
-	<!-- User defined properties -->
+	<!-- Obligatory properties -->
 	<property name="ftp.host" value="localhost" />
 	<property name="ftp.port" value="21" />
 	<property name="ftp.user" value="name" />
 	<property name="ftp.password" value="password" />
 	<property name="fromdirectory" value="/xampp" />
 	<property name="todirectory" value="D:\dev\backups\xamppexample" />
+	
+	<!-- Optional properties. Use for fine tuning -->
+	<property name="create.archive" value="true" />
 	<property name="keep.last.n.archives" value="4" />
-
+	<property name="follow.symlinks" value="false" />
+	<property name="get.only.newer.or.changed" value="true" />
+	<property name="clean.after.archiving" value="false" />
+	<property name="log.level" value="info" />
+	<property name="ftp.passive.mode" value="true" />
+		
 	<!-- Service properties -->
 	<property name="target.dir" value="target" />
 	<property name="checksum.dir" value="md5" />
-	<property name="follow.symlinks" value="false" />
-	<property name="get.only.newer.or.changed" value="true" />
-	<property name="create.archive" value="true" />
-	<property name="clean.after.archiving" value="false" />
+		
 
 	<target name="init">
 		<tstamp>
@@ -25,8 +30,7 @@
 		<mkdir dir="${todirectory}/${target.dir}" />
 		<mkdir dir="${todirectory}/${checksum.dir}" />
 		
-		<!-- For more information in log change loglevel attribute to 'verbose' value -->
-		<record name="${todirectory}/${date.time.begin}.log" loglevel="info" />
+		<record name="${todirectory}/${date.time.begin}.log" loglevel="${log.level}" />
 	</target>
 
 	<target name="runbackup" depends="init">
@@ -54,7 +58,7 @@
 		<ftp password="${ftp.password}" userid="${ftp.user}" 
 	    		server="${ftp.host}" port="${ftp.port}" 
 	    		preservelastmodified="true" binary="true" 
-	    		action="get" passive="true" remotedir="${fromdirectory}"
+	    		action="get" passive="${ftp.passive.mode}" remotedir="${fromdirectory}"
 				depends="${get.only.newer.or.changed}" verbose="true"
 				retriesAllowed="3">
 			<fileset dir="${todirectory}/${target.dir}" followsymlinks="${follow.symlinks}">
