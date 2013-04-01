@@ -1,8 +1,8 @@
 h1{font-size: 150%}. Ant FTP Backup
 
-p. "Русский":../ru/index.html | "English":./index.html
+p>. "Русский":../ru/index.html | "English":./index.html
 
-p. its an "Ant":http://ant.apache.org based routine to backup your site via ftp - meaning from ftp to local hdd (or where you'll run it). 
+p. it's an "Ant":http://ant.apache.org based routine to backup your site via ftp - meaning from ftp to local hdd (or where you'll run it). 
 *It's free as a free beer, but will take you several minutes to install*. 
 
 h2. Abilities: 
@@ -11,7 +11,7 @@ h2. Abilities:
 * create archive each time when backup;
 * download only newer or changed files - this will save you some network traffic and time;
 * create new archive only if there were newer or changed files - this will save you several megabytes on your HDD;
-* take care for log file from last backup process.
+* take care for log file during current backup process.
 
 h2. Installation:
 
@@ -25,7 +25,7 @@ h2. Installation:
 
 h2. Scheduling: 
 
-Use scheduler embedded in your OS. This will "crontab" on linux and "Task Scheduler" on Windows. 
+Use scheduler embedded in your OS. It will "crontab" on Linux and "Task Scheduler" on Windows. 
 
 h2. Resources
 
