@@ -48,7 +48,7 @@ h3. Настройка переменной окружения JAVA_HOME
 
 h3. Загрузка и распаковка Ant, настройка переменной окружения ANT_HOME
 
-Теперь в браузере откройте "Apache Ant - Binary Distributions":http://ant.apache.org/bindownload.cgi - страничку загрузки ANT, прокрутите страницу немного вниз и найдите строку типа такой: "@.zip archive: apache-ant-x.x.x-bin.zip [PGP] [SHA1] [SHA512] [MD5]@". Это то, что нужно скачать - загрузите zip версию сборки Ant'а и распакуйте куда-нибудь архив, лучше всего в какой-нибудь короткий путь, скажем, в директорию   "@C:\tools\apache-ant-x.x.x@". К примеру, в моем случае это выглядит как @C:\tools\apache-ant-1.8.4@, потому что 1.8.4 на данный момент последняя версия ANT-a. После распаковки проверьте следующие директории по указанному нами пути: "bin", "etc","lib" и "manual". Если с этим все нормально, создайте переменную @ANT_HOME@, которая будет указывать на этот путь: @C:\tools\apache-ant-x.x.x@. Переменная создается точно так же, как мы создавали  @JAVA_HOME@ на прошлом этапе.  
+Теперь в браузере откройте "Apache Ant - Binary Distributions":http://ant.apache.org/bindownload.cgi - страничку загрузки ANT, прокрутите страницу немного вниз и найдите строку типа такой: "@.zip archive: apache-ant-x.x.x-bin.zip [PGP] [SHA1] [SHA512] [MD5]@". Это то, что нужно скачать - загрузите zip версию сборки Ant'а и распакуйте куда-нибудь архив, лучше всего в какой-нибудь короткий путь, скажем, в директорию   "@C:\tools\apache-ant-x.x.x@". К примеру, в моем случае это выглядит как @C:\tools\apache-ant-1.8.4@, потому что 1.8.4 на данный момент последняя версия ANT-a. После распаковки проверьте, что в указанной вами директории после распаковки появились поддиректории: "bin", "etc","lib" и "manual". Если с этим все нормально, создайте переменную @ANT_HOME@, которая будет указывать на этот путь: @C:\tools\apache-ant-x.x.x@. Переменная создается точно так же, как мы создавали  @JAVA_HOME@ на прошлом этапе.  
 
 h3. Необязательно, но для удобства можно подправить переменную PATH
 
@@ -70,15 +70,15 @@ p. Но не удобнее ли запускать ANT без указания 
 
 Откройте опять окно "*Переменные окружения*" и найдите в секции "*Пользовательские переменные*" переменную @PATH@. Если такая там есть, тогда немного подправьте её значение: добавьте к концу строки "@;%ANT_HOME%\bin@" - с точкой-с-запятой и знаками процента, и сохраните (нажмите Ok, Ok, Ok). Если такой переменной нету в списке Пользовательских переменных, тогда создайте ее: Имя @PATH@ и значение такое: "@%PATH%;%ANT_HOME%\bin@" - со знаками процента, точками с запятой и слешами. Сохраните. 
 
-Now open new "@cmd@" window and type just "@ant -v@". You should see exactly the same output like previous time. 
-You are done. 
+Откройте новое окно "@cmd@" и выполните "@ant -v@" без указания пути. Вы должны увидеть такое же, сообщение, как и в прошлый раз. 
+Готово. 
 
-h3. Download and configure ant-ftpbackup
+h3. Скачайте и настройте ant-ftpbackup
  
-Download "ant-ftpbackup.xml":../ant-ftpbackup.xml directly from this link, save file somewhere, saying in @C:\tools\ant-ftpbackup.xml@. Now let's configure your first backup. 
+Скачайте "ant-ftpbackup.xml":../ant-ftpbackup.xml прямо по этой ссылке, сохраните куда-нибудь файл, скажем, в  @C:\tools\ant-ftpbackup.xml@. Теперь давайте настроим и запустим ваш первый бекап. 
 
-Open this file for edit and change required options to access your ftp site. 
-At the top of file find section looking like this: 
+Откройте полученный файл в текстовом редакторе и откорректируйте несколько необходимых настроек для доступа к вашему сайту по FTP. 
+Вверху файла найдите блок текста, похожий на этот: 
 
 bc.. 
 <property name="ftp.host" value="localhost" />
@@ -89,15 +89,15 @@ bc..
 <property name="todirectory" value="D:\dev\backups\xamppexample" />
 <property name="keep.last.n.archives" value="4" />
 	
-p. You will need to change respective values according to your ftp credentials. 
-@ftp.host@ - for example @mysite.com@, there is no need to type full path or specify @ftp://@ protocol name. Just fill your domain address and you are done. 
-@ftp.port@ - usually most of hosts use default ftp port, equals to @21@. And usually you don't need to change this. But if you need to change port number, probably you already know about it. 
-@ftp.user@ - your login to access ftp. 
-@ftp.password@ - your password to access ftp.
-@fromdirectory@ - indicates remote ftp directory, from where you want to grab files to backup. Note that leading slash @/@ is optional, but any way @fromdirectory@ parameter must be specified from root of your ftp resource. For example, when you open your ftp host in file manager (explorer, far, mc or whatever) and need to proceed for example to @www/mysite.com/public_html/data@ directory in order to backup it, then specify  value for @fromdirectory@ just as @/www/mysite.com/public_html/data@
-@todirectory@ - just the full local path where you want your backup to be saved. For example @C:\backups\mysite.com\databak@. All unexisting directories from this path will be created automatically, for example when @backups@ directory is not created yet. 
+p. Вам нужно изменить эти параметры в соответствии с вашими настройками доступа к ftp. 
+@ftp.host@ - например @mysite.com@, здесь нет неообходимости прописывать тип протокола, как @ftp://@. Просто укажите имя вашего домена и все. 
+@ftp.port@ - как правило, большинство хостинг-провайдеров используют дефолтный ftp порт @21@. И обычно вам ничего не нужно здесь менять. Но если у вашего ресурса другой порт, скорее всего вы об этом знаете. 
+@ftp.user@ - ваш логин для доступа по ftp. 
+@ftp.password@ - ваш пароль для доступа по ftp.
+@fromdirectory@ - путь к удаленной диектории, содержимое которой вы хотите бекапить. Лидирующий слеш в корне пути @/@ не обязателен, но в любом случае @fromdirectory@ должен быть указан от корня вашего ftp ресурса. Пример: @www/mysite.com/public_html/data@.
+@todirectory@ - Просто полный путь той директории, куда вы хотит сохранять бекап. Пример: @C:\backups\mysite.com\databak@. В случае, когда какие-то директори этого пути не существуют, они будут созданы автоматически. Например @backups@ может быть создана, если ее еще нету в @C:\backups\mysite.com@. 
 
-For the first try you are done, and in order to just check how it works, specify @fromdirectory@ where just several little files lives, so first backup will quick and clean. Another options you will change later, when test backup will be created successfully. Save file and try to run your first backup.
+Для первого запуска все готово. Теперь, чтобы быстро проверить, как это работает, укажите @fromdirectory@, в которой расположено всего несколько маленьких файлов. Другие свойства, которые вам могут понадобится для тонкой настройки, можно будет поменять позже, если первый запуск пройдет успешно.
 
 h3. Run first backup
 
