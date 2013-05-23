@@ -144,4 +144,6 @@ FILE mysite1.com.xml
 DIR mysite2.net/
 FILE mysite2.net.xml
 
-p. Also check additional properties, that you may want to change to suit your needs for particular backup at "properties":./props.html page. As an example you may not want to create archives each time when backing up your site, just because already have configured cron task for archiving at your hosting, or you may want to clear downloaded files after archiving etc. 
+p. Also check additional properties, that you may want to change to suit your needs for particular backup at "properties":./props.html page. As an example you may not want to create archives each time when backing up your site, just because already have configured cron task for archiving at your hosting, or you may want to clear downloaded files after archiving etc.
+
+p. As a last step, you can configure scheduling for your backup in Task Scheduler to run it daily or weakly. This step is only up to you. 
